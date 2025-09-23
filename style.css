@@ -318,13 +318,13 @@ footer {
 }
 
 /* Oscilloscope fixé et centré horizontalement */
-  #oscilloscope {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80%;
-    height: 120px;
-    background: transparent;
-    z-index: 1;
+  #oscilloscope { 
+	  position: fixed;
+	  bottom: 0;
+	  left: 50%;
+	  transform: translateX(-50%); /* centre horizontalement */
+	  width: 80%; /* largeur réduite */
+	  height: 120px;
+	  background: transparent;
   }
+
