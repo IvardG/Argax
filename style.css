@@ -1,4 +1,6 @@
-/* Réinitialisation et structure de base */
+/* ============================
+   Réinitialisation & Base
+============================ */
 * {
   margin: 0;
   padding: 0;
@@ -9,13 +11,17 @@ body {
   font-family: 'Space Grotesk', sans-serif;
   background-color: #0e0e14;
   color: #f4f1e7;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
 }
 
-/* Animation des étoiles */
+/* ============================
+   Fond animé étoiles
+============================ */
 .stars {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 300%;
@@ -23,272 +29,220 @@ body {
   pointer-events: none;
   z-index: 0;
   background-image: 
-		radial-gradient(#ffffff 1.2px, transparent 1.2px),
-		radial-gradient(#aee7ff 1px, transparent 1px),
-		radial-gradient(#ffffff 0.8px, transparent 0.8px),
-		radial-gradient(#ffffff 1.5px, transparent 1.5px);
+    radial-gradient(#ffffff 1.2px, transparent 1.2px),
+    radial-gradient(#aee7ff 1px, transparent 1px),
+    radial-gradient(#ffffff 0.8px, transparent 0.8px),
+    radial-gradient(#ffffff 1.5px, transparent 1.5px);
   background-size: 400px 400px, 600px 600px, 800px 800px, 1200px 1200px;
-  background-position: 0 0, 0 0, 0 0, 0 0;
   animation: moveStars1 200s linear infinite,
              moveStars2 300s ease-in-out infinite,
              moveStars3 400s linear infinite,
              sparkle 6s ease-in-out infinite;
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 @keyframes moveStars1 {
-  0% { background-position: 0 0, 0 0, 0 0, 0 0; }
-  100% { background-position: -1000px -1000px, -600px -400px, -800px -300px, -400px -600px; }
+  to { background-position: -1000px -1000px, -600px -400px, -800px -300px, -400px -600px; }
 }
-
 @keyframes moveStars2 {
-  0% { background-position: 0 0, 0 0, 0 0, 0 0; }
-  100% { background-position: -300px -700px, -500px -200px, -200px -500px, -600px -100px; }
+  to { background-position: -300px -700px, -500px -200px, -200px -500px, -600px -100px; }
 }
-
 @keyframes moveStars3 {
-  0% { background-position: 0 0, 0 0, 0 0, 0 0; }
-  100% { background-position: -500px -400px, -300px -600px, -600px -300px, -200px -700px; }
+  to { background-position: -500px -400px, -300px -600px, -600px -300px, -200px -700px; }
 }
-
 @keyframes sparkle {
   0%, 100% { opacity: 0.18; filter: brightness(1); }
   50% { opacity: 0.5; filter: brightness(1.6); }
 }
 
-/* Bandeau supérieur avec logo */
+/* ============================
+   Header
+============================ */
 .header {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 25vh;
-  position: relative;
-  z-index: 1;
+  height: 20vh;
+  min-height: 120px;
   padding-top: 2vh;
   background: radial-gradient(circle, #3e3b37 0%, #0e0e11 65%);
+  z-index: 1;
 }
 
 .logo-container {
-  position: relative;
-  width: 220px;
-  height: auto;
-  animation: pulse 4s ease-in-out infinite;
+  width: clamp(120px, 25vw, 220px);
+  animation: pulseLogo 4s ease-in-out infinite;
 }
 
 .logo-container img {
-  width: 80%;
+  width: 100%;
   height: auto;
   display: block;
   filter: drop-shadow(0 0 10px #dcae64);
 }
 
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.9;
-  }
-  50% {
-    transform: scale(1.04);
-    opacity: 1;
-  }
+@keyframes pulseLogo {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.05); opacity: 1; }
 }
 
-/* Ligne de séparation */
+/* ============================
+   Séparateur
+============================ */
 .separator {
   width: 100%;
-  height: 5px;
+  height: 4px;
   background: linear-gradient(to right, transparent, #dcae64, transparent);
-  opacity: 0.5;
-  z-index: 2;
+  opacity: 0.6;
 }
 
-/* Corps de page */
-
+/* ============================
+   Contenu principal
+============================ */
 .content {
-  mask-image: linear-gradient(to bottom, 
-    rgba(0, 0, 0, 0) 0%,         /* Transparent en haut */
-    rgba(0, 0, 0, 1) 15%,        /* Commence à apparaître */
-    rgba(0, 0, 0, 1) 85%,        /* Visible jusqu'à la fin */
-    rgba(0, 0, 0, 0) 100%);      /* Re-devient transparent en bas */
-  -webkit-mask-image: linear-gradient(to bottom, 
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 1) 15%,
-    rgba(0, 0, 0, 1) 85%,
-    rgba(0, 0, 0, 0) 100%);
-}
-
-
-.content {
+  flex: 1;
   position: relative;
   z-index: 1;
-  height: 75vh;
-  overflow-y: auto;
-  padding: 4vh 0;
-  width: 60%;
+  width: min(90%, 900px);
   margin: 0 auto;
-  font-size: 1.1rem;
-  line-height: 1.6;
-}
-.content {
-  /* ... tes styles existants ... */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none;  /* IE & Edge */
+  padding: 4vh 0;
+  font-size: clamp(0.95rem, 1.1vw, 1.2rem);
+  line-height: 1.7;
+  overflow-y: auto;
+
+  mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
 }
 
-/* Chrome, Safari & Opera */
-.content::-webkit-scrollbar {
-  display: none;
-}
-/* Mise en forme typographique */
+.content::-webkit-scrollbar { display: none; }
+.content { scrollbar-width: none; }
+
+/* ============================
+   Typographie
+============================ */
 h2 {
   color: #d4af7f;
   border-bottom: 1px solid #986c43;
-  padding-bottom: 5px;
-  margin-top: 2em;
-  margin-bottom: 1em;
+  padding-bottom: 0.3em;
+  margin: 2em 0 1em;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
   font-weight: 500;
 }
 
 h3 {
   color: #d4af7f;
   text-align: center;
-  padding-bottom: 0;
-  margin-top: 0;
-  margin-bottom: 0;
+  margin: 1.5em 0 0.8em;
+  font-size: clamp(1.1rem, 1.6vw, 1.3rem);
   font-weight: 500;
 }
 
 em {
   color: #c9c0b7;
   font-style: italic;
-  font-family: 'Space Grotesk', sans-serif;
-  letter-spacing: 0.3px;
   display: inline-block;
-  margin-top: 10px;
+  margin-top: 0.5em;
 }
 
 p {
-  margin-bottom: 1.5em;
+  margin-bottom: 1.2em;
 }
 
 ul {
   list-style: none;
-  margin: 0 50px;
-  padding-left: 0;
-  margin-bottom: 2em;
+  margin: 0 1.5em 2em;
+  padding: 0;
 }
-
 ul li::before {
   content: " ✧ ";
   color: #986c43;
 }
 
 blockquote {
-  margin: 10px 200px;
-  padding-left: 5px;
+  margin: 1em auto;
+  padding-left: 1em;
   border-left: 3px solid #986c43;
-  color: #f4f1e7;
+  color: #e6e1d9;
   font-style: italic;
+  max-width: 80%;
 }
 
+/* ============================
+   Section "Join"
+============================ */
 .join {
   text-align: center;
-  margin: 80px auto 60px auto;
+  margin: 10vh auto;
+  padding: 0 5%;
   max-width: 800px;
-  padding: 0 20px;
 }
-
-.join h2 {
-  color: #d4af7f;
-  margin-bottom: 20px;
-}
-
+.join h2 { margin-bottom: 0.8em; }
 .join p {
-  font-size: 1.1em;
-  margin-bottom: 30px;
+  font-size: clamp(1rem, 1.3vw, 1.2rem);
+  margin-bottom: 1.5em;
   color: #e2dbd4;
 }
-
 .cta-button {
   background: #986c43;
   color: #0e0e11;
-  padding: 14px 32px;
-  font-size: 1.1em;
+  padding: 0.9em 2em;
+  font-size: clamp(1rem, 1.3vw, 1.1rem);
   border: none;
   border-radius: 30px;
   cursor: pointer;
-  text-decoration: none;
   font-weight: bold;
   box-shadow: 0 0 12px rgba(218, 180, 120, 0.3);
   transition: background 0.3s ease, transform 0.2s ease;
 }
-
 .cta-button:hover {
   background: #c79965;
   transform: scale(1.05);
 }
-footer {
-  text-align: center;
-  width: 60%;
-  margin: 0 auto;
-  padding: 30px 0;
-  font-size: 0.9em;
-  color: #666;
-}
-.origin-section {
-  margin-top: 60px;
-}
 
+/* ============================
+   Origin Cards
+============================ */
 .origin-options {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px;
-  margin: 30px 0;
+  gap: 1em;
+  margin: 2em 0;
 }
-
 .origin-card {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid #986c43;
-  padding: 15px 25px;
+  padding: 1em 1.5em;
   border-radius: 10px;
-  color: #f4f1e7;
+  font-size: clamp(0.9rem, 1vw, 1rem);
   cursor: pointer;
-  font-size: 1em;
-  font-family: 'Space Grotesk', sans-serif;
   transition: all 0.3s ease;
 }
-
 .origin-card:hover {
   background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
-
 .origin-detail {
-  padding: 20px;
+  padding: 1.5em;
   max-width: 700px;
   margin: 0 auto;
   color: #eae5db;
-}
-.origin-detail.fade-in {
   animation: fadeIn 0.6s ease;
 }
-
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-/* Transmission */
+
+/* ============================
+   Transmission
+============================ */
 .transmission-container {
   width: 90%;
-  margin: 15vh auto 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  margin: 12vh auto 0;
   text-align: center;
-  gap: 2rem;
+  gap: 1.5rem;
 }
-
 .transmission {
   font-family: 'Unica One', sans-serif;
   font-size: clamp(1rem, 4vw, 2.5rem);
@@ -297,34 +251,32 @@ footer {
   transition: opacity 1.5s ease;
   white-space: nowrap;
 }
+.transmission.special { color: #d4af7f; }
+.visible { opacity: 1; }
 
-.transmission.special {
-  color: #d4af7f; /* doré */
+/* ============================
+   Footer
+============================ */
+footer {
+  text-align: center;
+  width: min(90%, 900px);
+  margin: 0 auto;
+  padding: 2em 0;
+  font-size: clamp(0.75rem, 1vw, 0.9rem);
+  color: #888;
+  z-index: 1;
 }
 
-.visible {
-  opacity: 1;
+/* ============================
+   Oscilloscope
+============================ */
+#oscilloscope {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 85%;
+  max-width: 1000px;
+  height: 120px;
+  background: transparent;
 }
-
-.pulse {
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0%   { opacity: 0.6; }
-  50%  { opacity: 1; }
-  100% { opacity: 0.6; }
-
-}
-
-/* Oscilloscope fixé et centré horizontalement */
-  #oscilloscope { 
-	  position: fixed;
-	  bottom: 0;
-	  left: 50%;
-	  transform: translateX(-50%); /* centre horizontalement */
-	  width: 80%; /* largeur réduite */
-	  height: 120px;
-	  background: transparent;
-  }
-
