@@ -314,4 +314,17 @@ footer {
   0%   { opacity: 0.6; }
   50%  { opacity: 1; }
   100% { opacity: 0.6; }
+
 }
+
+/* Oscilloscope fixé et centré horizontalement */
+  #oscilloscope {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    height: 120px;
+    background: transparent;
+    z-index: 1;
+  }
