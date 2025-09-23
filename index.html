@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Les Enfants d’Argax</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Unica+One&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="stars"></div>
+
+  <header class="header">
+    <div class="logo-container">
+      <img src="lesEnfantsdArgax.svg" alt="Logo des Enfants d’Argax">
+    </div>
+  </header>
+
+  <div class="separator"></div>
+
+  <main class="content">
+    <h2>✦ Bienvenue parmi les Enfants d’Argax</h2>
+    <p>Ce n’est pas une faction, ce n’est pas une armée, ce n’est pas une entreprise.<br>
+    C’est un regroupement libre de pilotes, qui partagent le goût de l’exploration, de l’autonomie, de l’insoumission.</p>
+
+    <p>Ici, nul dogme, nulle hiérarchie figée.<br>
+    Chacun vient avec ses rêves, ses vaisseaux cabossés, ses silences et ses cartes d’étoiles griffonnées à la main.<br>
+    Ici, on ne vous demandera pas d’obéir...
+    </p>
+
+    <h2>✦ Qui sommes-nous ?</h2>
+    <p>Nés d’un éclat de révolte silencieuse et d’un désir profond d’explorer autrement, <strong>Les Enfants d’Argax</strong> rassemblent des pilotes, rêveurs et nomades en quête de sens dans l’immensité galactique.
+    Nous sommes un groupe en mouvement, une communauté choisie, sans QG, sans chaînes, sans maître.</p>
+
+<section class="origin-section">
+	<h2>✦ Notre origine</h2>
+    <p>La signification d’<strong>Argax</strong> reste un mystère. Personne ne sait vraiment. Mais ceux qui entendent cet appel reconnaissent en lui un besoin partagé : celui de construire autrement, de se réinventer à la marge, loin des dogmes.</p>
+	
+  <div class="origin-options">
+    <button class="origin-card" data-origin="1">🌟 </button>
+    <button class="origin-card" data-origin="2">📡 </button>
+    <button class="origin-card" data-origin="3">🧬 </button>
+    <button class="origin-card" data-origin="4">🔮 </button>
+  </div>
+  <div class="origin-detail" id="origin-detail">
+  </div>
+
+</section>
+
+    <h2>✦ Ce que nous faisons</h2>
+    <ul>
+      <li> Exploration libre vers les routes oubliées</li>
+      <li> Soutien mutuel & transmission</li>
+      <li> Réinvention de l’ailleurs et du maintenant</li>
+      <li> Engagement mesuré, selon la conscience de chacun</li>
+    </ul>
+
+    <h2>✦ Ce que nous ne sommes pas</h2>
+    <p>Nous ne servons pas de bannière.<br>
+    Nous ne promettons ni gloire, ni pouvoir, ni sécurité.<br>
+    Nous ne cherchons pas à dominer un territoire.</p>
+
+    <blockquote>
+	<ul>
+      Nous ne suivons que les étoiles.<br>
+      La liberté n’a pas de QG.<br>
+      L’éveil est une route, pas une destination.<br>
+	</ul>
+    </blockquote>
+	
+	<section class="join">
+	<h2>✦ Rejoindre les Enfants</h2>
+	<p>Tu entends l’écho d’Argax ? Tu veux faire un bout de route avec d’autres éveillés, sans renier ta propre voie ?</p>
+	<a class="cta-button" href="Page_1.html">Rejoins-nous</a>
+	</section>
+
+	<footer>
+    &copy; 3311 – Les Enfants d’Argax. Aucun QG. Juste des étoiles.
+	</footer>
+  </main>  
+  
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const originDetail = document.getElementById("origin-detail");
+
+    const texts = {
+      1: `<h3>Une étoile oubliée</h3>
+      Argax serait le nom d’une étoile morte, disparue des cartes, mais que certains explorateurs affirment avoir vue pulser dans les confins.<br>
+      <em>“Argax était censée s’être éteinte il y a des millénaires. Mais certains ont vu sa lueur, fine et tremblante, au bord du néant. Un battement dans l’obscurité. Une promesse.”</em>`,
+
+      2: `<h3>Un ancien signal</h3>
+      Argax désigne un code, une séquence, un signal mystérieux, capté une fois dans le vide profond. Incompréhensible mais obsédant.<br>
+      <em>“C’est ainsi que nous l’avons nommé : Argax. Il ne nous disait rien, mais nous savions qu’il nous parlait.”</em>`,
+
+      3: `<h3>Un nom personnel refondu</h3>
+      Argax serait l’anagramme ou l’écho déformé d’un nom oublié, d’un ancien vaisseau, d’un mentor perdu, ou même d’Ivard lui-même.<br>
+      <em>“Argax… ce n’est qu’un mot. Mais il me suit depuis l’enfance. Comme si tout ce que je fuyais y trouvait refuge.”</em>`,
+
+      4: `<h3>Une entité mythique</h3>
+      Argax devient une sorte d’archétype, un mythe fondateur, ni tout à fait réel ni tout à fait abstrait.<br>
+      <em>“Nous ne savons pas ce qu’est Argax. Une présence ? Un souvenir ? Un concept ? Peu importe. C’est ce qui nous rassemble.”</em>`
+    };
+
+    document.querySelectorAll(".origin-card").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.origin;
+
+        // Pour le fade-out/in
+        originDetail.classList.remove("fade-in");
+        void originDetail.offsetWidth; // Trick to restart animation
+        originDetail.innerHTML = texts[id];
+        originDetail.classList.add("fade-in");
+      });
+    });
+  });
+</script>
+
+
+  
+</body>
+</html>

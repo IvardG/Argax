@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Les Enfants d’Argax</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Unica+One&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="Page_1.css"> <!-- si tu veux séparer CSS Page_1 -->
+</head>
+<body>
+  <div class="stars"></div>
+
+  <header class="header">
+    <div class="logo-container">
+      <img src="lesEnfantsdArgax.svg" alt="Logo des Enfants d’Argax">
+    </div>
+  </header>
+
+  <div class="separator"></div>
+
+  <div class="transmission-wrapper">
+    <div class="signal-circle"></div>
+    <div class="signal-circle"></div>
+    <div class="signal-circle"></div>
+
+    <div class="transmission-container">
+      <div id="line1" class="transmission">Réponds si tu es prêt.</div>
+      <div id="line2" class="transmission special">Fréquence 7-4-9.</div>
+      <div id="line3" class="transmission">Fin de transmission.</div>
+    </div>
+  </div>
+
+  <audio id="audio" src="les-enfants-d-argax.flac"></audio>
+  <canvas id="oscilloscope"></canvas>
+
+  <script src="Page_1.js" defer></script>
+</body>
+</html>
