@@ -76,15 +76,16 @@ body {
 }
 
 .logo-container {
-  height: clamp(48px, 12vh, 140px); /* hauteur responsive, min 48px, max 140px */
+  width: clamp(120px, 20vw, 200px);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .logo-container img {
-  height: 100%;
-  width: auto;
+  width: 100%;
+  height: auto;
+  max-height: calc(18vh); /* laisse un petit padding vertical sous le header */
   object-fit: contain;
   display: block;
 }
@@ -291,4 +292,5 @@ footer {
   background: transparent;
   z-index: 5;
 }
+
 
