@@ -76,18 +76,15 @@ body {
 }
 
 .logo-container {
-  width: clamp(120px, 20vw, 200px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: clamp(120px, 20vw, 200px); /* taille responsive */
+  animation: pulseLogo 4s ease-in-out infinite;
 }
 
 .logo-container img {
   width: 100%;
   height: auto;
-  max-height: calc(18vh); /* laisse un petit padding vertical sous le header */
-  object-fit: contain;
   display: block;
+  filter: drop-shadow(0 0 10px #dcae64);
 }
 
 @keyframes pulseLogo {
@@ -292,5 +289,6 @@ footer {
   background: transparent;
   z-index: 5;
 }
+
 
 
