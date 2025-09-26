@@ -15,6 +15,8 @@ body {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+  padding-top: 20vh;  /* espace pour header fixe */
+  padding-bottom: 100px; /* espace pour footer fixe et oscillo */
 }
 
 /* ============================
@@ -59,6 +61,10 @@ body {
    Header
 ============================ */
 .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -66,11 +72,11 @@ body {
   min-height: 120px;
   padding-top: 2vh;
   background: radial-gradient(circle, #3e3b37 0%, #0e0e11 65%);
-  z-index: 1;
+  z-index: 10;
 }
 
 .logo-container {
-  width: clamp(120px, 25vw, 220px);
+  width: clamp(120px, 20vw, 200px); /* taille responsive */
   animation: pulseLogo 4s ease-in-out infinite;
 }
 
@@ -94,6 +100,7 @@ body {
   height: 4px;
   background: linear-gradient(to right, transparent, #dcae64, transparent);
   opacity: 0.6;
+  margin-top: 20vh; /* pour rester en dessous du header */
 }
 
 /* ============================
@@ -144,9 +151,7 @@ em {
   margin-top: 0.5em;
 }
 
-p {
-  margin-bottom: 1.2em;
-}
+p { margin-bottom: 1.2em; }
 
 ul {
   list-style: none;
@@ -258,13 +263,16 @@ blockquote {
    Footer
 ============================ */
 footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   text-align: center;
-  width: min(90%, 900px);
-  margin: 0 auto;
-  padding: 2em 0;
+  padding: 1em 0;
   font-size: clamp(0.75rem, 1vw, 0.9rem);
   color: #888;
-  z-index: 1;
+  background: #0e0e11;
+  z-index: 10;
 }
 
 /* ============================
@@ -272,11 +280,12 @@ footer {
 ============================ */
 #oscilloscope {
   position: fixed;
-  bottom: 0;
+  bottom: 50px; /* placé juste au-dessus du footer */
   left: 50%;
   transform: translateX(-50%);
   width: 85%;
   max-width: 1000px;
   height: 120px;
   background: transparent;
+  z-index: 5;
 }
