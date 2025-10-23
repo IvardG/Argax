@@ -323,7 +323,7 @@ html {
 ============================ */
 #oscilloscope {
   position: fixed;
-  bottom: 10px; /* placé juste au-dessus du footer */
+  bottom: 5px; /* placé juste au-dessus du footer */
   left: 50%;
   transform: translateX(-50%);
   width: 85%;
@@ -332,6 +332,7 @@ html {
   background: transparent;
   z-index: 5;
 }
+
 
 
 
