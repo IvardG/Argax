@@ -3,45 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>page_2</title>
+  <title>Titre spécifique à la page</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <!-- Fond étoilé -->
   <div class="stars"></div>
 
-  <!-- Header avec logo -->
+  <!-- Header fixe -->
   <header class="header">
     <div class="logo-container">
-      <img src="lesEnfantsdArgax.svg" alt="Logo Les Enfants d’Argax">
+      <img src="lesEnfantsdArgax.svg" alt="Logo Les Enfants d’Argax" class="logo">
     </div>
+	<div class="separator"></div>
   </header>
-
-  <!-- Séparateur -->
-  <div class="separator"></div>
-
-  <!-- Contenu principal -->
-  <main class="content">
-    <section class="transmission-container">
-      <div class="transmission">"Les signaux voyagent au-delà des étoiles..."</div>
-      <div class="transmission">"Chaque fréquence révèle une vérité cachée..."</div>
-      <div class="transmission special">"Nous ne suivons que les étoiles"</div>
-    </section>
+  
+  <!-- Transmission texte -->
+  <div class="transmission-container">
+    <div id="line1" class="transmission">Réponds si tu es prêt.</div>
+    <div id="line2" class="transmission special">Fréquence 7-4-9.</div>
+    <div id="line3" class="transmission">Fin de transmission.</div>
+  </div>
 
     <!-- Audio et oscilloscope -->
     <audio id="audio" src="les-enfants-d-argax.flac"></audio>
     <canvas id="oscilloscope"></canvas>
   </main>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 3311 Les Enfants d’Argax — Tous droits réservés</p>
+<!-- Footer fixe -->
+  <footer class="footer">
+	<div class="separator"></div>
+    <p>&copy; 3311 – Les Enfants d’Argax. Aucun QG. Juste des étoiles.</p>
   </footer>
-
+  
   <!-- Script externe -->
   <script src="page_2.js"></script>
 </body>
 </html>
+
 
 
 
