@@ -318,4 +318,19 @@ html {
   0%, 100% { opacity: 0.18; filter: brightness(1); }
   50% { opacity: 0.5; filter: brightness(1.6); }
 }
+/* ============================
+   Oscilloscope
+============================ */
+#oscilloscope {
+  position: fixed;
+  bottom: 50px; /* placé juste au-dessus du footer */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 85%;
+  max-width: 1000px;
+  height: 120px;
+  background: transparent;
+  z-index: 5;
+}
+
 
