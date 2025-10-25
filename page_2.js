@@ -120,7 +120,8 @@
         inputBuffer += e.key;
         if (inputBuffer.length > 3) inputBuffer = inputBuffer.slice(-3);
         if (inputBuffer === "749") {
-          window.location.href = "https://discord.gg/tonLienDiscord";
+          window.location.href = "https://discord.gg/tHqVHMNKNu";
         }
       }
     });
+
