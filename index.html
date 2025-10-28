@@ -36,7 +36,6 @@
         radial-gradient(#ffffff 0.8px, transparent 0.8px),
         radial-gradient(#ffffff 1.5px, transparent 1.5px);
       background-size: 400px 400px, 600px 600px, 800px 800px, 1200px 1200px;
-      background-position: 0 0, 0 0, 0 0, 0 0;
       animation: moveStars1 200s linear infinite,
                  moveStars2 300s ease-in-out infinite,
                  moveStars3 400s linear infinite,
@@ -45,18 +44,18 @@
     }
 
     @keyframes moveStars1 {
-      0% { background-position: 0 0, 0 0, 0 0, 0 0; }
-      100% { background-position: -1000px -1000px, -600px -400px, -800px -300px, -400px -600px; }
+      0% { background-position: 0 0; }
+      100% { background-position: -1000px -1000px; }
     }
 
     @keyframes moveStars2 {
-      0% { background-position: 0 0, 0 0, 0 0, 0 0; }
-      100% { background-position: -300px -700px, -500px -200px, -200px -500px, -600px -100px; }
+      0% { background-position: 0 0; }
+      100% { background-position: -600px -400px; }
     }
 
     @keyframes moveStars3 {
-      0% { background-position: 0 0, 0 0, 0 0, 0 0; }
-      100% { background-position: -500px -400px, -300px -600px, -600px -300px, -200px -700px; }
+      0% { background-position: 0 0; }
+      100% { background-position: -800px -300px; }
     }
 
     @keyframes sparkle {
@@ -119,7 +118,7 @@
       100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
     }
 
-    /* Écran noir de transition */
+    /* ===== ÉCRAN NOIR DE TRANSITION ===== */
     .blackout {
       position: fixed;
       top: 0;
@@ -147,34 +146,39 @@
 
   <!-- Logo central -->
   <div class="landing-container">
-    <a class="logo-link">
+    <a class="logo-link" id="logoLink">
       <img src="lesEnfantsdArgax.svg" alt="Les Enfants d’Argax" class="logo-pulse">
     </a>
   </div>
 
   <!-- Voile de transition -->
-  <div class="blackout"></div>
+  <div class="blackout" id="blackout"></div>
 
-  <!-- Musique d’ambiance -->
+  <!-- Musiques -->
   <audio id="introSound" autoplay loop>
-    <source src="Argax_Intro.mp3" type="audio/mpeg">
+    <source src="Argax_intro.mp3" type="audio/mpeg">
     Votre navigateur ne supporte pas l’audio HTML5.
   </audio>
 
+  <audio id="clickSound">
+    <source src="clic.mp3" type="audio/mpeg">
+  </audio>
+
   <script>
-    const audio = document.getElementById('introSound');
-    const logo = document.querySelector('.logo-link');
-    const blackout = document.querySelector('.blackout');
+    const introSound = document.getElementById('introSound');
+    const clickSound = document.getElementById('clickSound');
+    const logo = document.getElementById('logoLink');
+    const blackout = document.getElementById('blackout');
 
     // === FONDU D’ENTRÉE SONORE ===
-    audio.volume = 0;
+    introSound.volume = 0;
     const fadeDuration = 4000;
     const targetVolume = 0.4;
     const step = targetVolume / (fadeDuration / 100);
 
     const fadeIn = setInterval(() => {
-      if (audio.volume < targetVolume) {
-        audio.volume = Math.min(audio.volume + step, targetVolume);
+      if (introSound.volume < targetVolume) {
+        introSound.volume = Math.min(introSound.volume + step, targetVolume);
       } else {
         clearInterval(fadeIn);
       }
@@ -182,23 +186,27 @@
 
     // === TRANSITION VERS PAGE_1 ===
     logo.addEventListener('click', () => {
-      // Animation de sortie du logo
+      // Joue le son de clic
+      clickSound.currentTime = 0;
+      clickSound.play();
+
+      // Animation visuelle
       document.querySelector('.landing-container').classList.add('fade-out');
       blackout.classList.add('active');
 
-      // Fondu sonore
+      // Fondu sonore progressif
       const fadeOut = setInterval(() => {
-        if (audio.volume > 0.02) {
-          audio.volume -= 0.02;
+        if (introSound.volume > 0.02) {
+          introSound.volume -= 0.02;
         } else {
           clearInterval(fadeOut);
         }
       }, 100);
 
-      // Redirection après 1.5 s
+      // Redirection après la fin du clic
       setTimeout(() => {
         window.location.href = 'page_1.html';
-      }, 1500);
+      }, 700); // synchronisé avec la durée du son clic.mp3
     });
   </script>
 </body>
