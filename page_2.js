@@ -1,128 +1,125 @@
-    const audio = document.getElementById("audio");
-    const line1 = document.getElementById("line1");
-    const line2 = document.getElementById("line2");
-    const line3 = document.getElementById("line3");
-    const canvas = document.getElementById("oscilloscope");
-    const ctx = canvas.getContext("2d");
+const intro = document.getElementById("introSound");
+const clickSound = document.getElementById("clickSound");
+const message = document.getElementById("messageSound");
 
-    let animationId = null;
-    let sequenceStarted = false;
-    let audioCtx = null;
-    let analyser = null;
-    let dataArray = null;
+const line1 = document.getElementById("line1");
+const line2 = document.getElementById("line2");
+const line3 = document.getElementById("line3");
+const canvas = document.getElementById("oscilloscope");
+const ctx = canvas.getContext("2d");
 
-    // resize du canvas
-    function resizeCanvas() {
-      canvas.width = canvas.clientWidth;
-      canvas.height = 120;
+let animationId = null;
+let audioCtx = null;
+let analyser = null;
+let dataArray = null;
+let hasStarted = false;
+
+// --- Redimensionnement du canvas ---
+function resizeCanvas() {
+  canvas.width = canvas.clientWidth;
+  canvas.height = 120;
+}
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+
+// --- Initialisation audio après interaction utilisateur ---
+document.body.addEventListener("click", async () => {
+  if (hasStarted) return;
+  hasStarted = true;
+
+  // Lecture du clic
+  clickSound.play();
+
+  // Fade-out de la boucle d’intro
+  const fadeOut = setInterval(() => {
+    if (intro.volume > 0.02) {
+      intro.volume -= 0.02;
+    } else {
+      intro.pause();
+      clearInterval(fadeOut);
     }
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
+  }, 100);
 
-    // clic utilisateur pour lancer l'audio et AudioContext
-    document.body.addEventListener("click", async () => {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const src = audioCtx.createMediaElementSource(audio);
-        analyser = audioCtx.createAnalyser();
-        analyser.fftSize = 256;
-        src.connect(analyser);
-        analyser.connect(audioCtx.destination);
-        dataArray = new Uint8Array(analyser.frequencyBinCount);
-      }
-      if (audio.paused) {
-        try { await audio.play(); } catch(e){ console.warn(e); }
-      }
-    });
+  // Lancement du message
+  setTimeout(async () => {
+    message.volume = 0.7;
 
-    // synchronisation des phrases et déclenchement des cercles
-    audio.addEventListener("play", () => {
-      if (sequenceStarted) return;
-      sequenceStarted = true;
+    // Création du contexte audio
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const src = audioCtx.createMediaElementSource(message);
+    analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 256;
+    src.connect(analyser);
+    analyser.connect(audioCtx.destination);
+    dataArray = new Uint8Array(analyser.frequencyBinCount);
 
-      // déclencher cercles pulsants
-      document.querySelectorAll(".signal-circle").forEach(c => c.classList.add("pulse"));
+    try { await message.play(); } catch(e){ console.warn(e); }
 
-      // timing des phrases (en ms)
-      setTimeout(() => line1.classList.add("visible"), 79530);    // phrase 1
-      setTimeout(() => line2.classList.add("visible", "pulse"), 83370); // phrase 2
-      setTimeout(() => line3.classList.add("visible"), 87360);    // phrase 3
+    // Lancement de l’oscilloscope et des phrases
+    startOscilloscope();
+    startTransmissionText();
+  }, 400);
+});
 
-      startOscilloscope();
-    });
+// --- Apparition progressive du texte ---
+function startTransmissionText() {
+  setTimeout(() => line1.classList.add("visible"), 2000);
+  setTimeout(() => line2.classList.add("visible", "pulse"), 5000);
+  setTimeout(() => line3.classList.add("visible"), 8000);
+}
 
-    audio.addEventListener("pause", () => {
-      document.querySelectorAll(".signal-circle").forEach(c => c.classList.remove("pulse"));
-      cancelAnimationFrame(animationId);
-    });
+// --- Oscilloscope cosmique ---
+function startOscilloscope() {
+  const bufferLength = analyser.frequencyBinCount;
+  const dataArrayLocal = new Uint8Array(bufferLength);
+  const amplitude = 50;
 
-    audio.addEventListener("ended", () => {
-      document.querySelectorAll(".signal-circle").forEach(c => c.classList.remove("pulse"));
-      cancelAnimationFrame(animationId);
-    });
+  function draw() {
+    analyser.getByteFrequencyData(dataArrayLocal);
 
-    // Oscilloscope centré
-    function startOscilloscope() {
-      const bufferLength = analyser.frequencyBinCount;
-      const dataArrayLocal = new Uint8Array(bufferLength);
-      const amplitude = 50;
-      const halfWidth = () => canvas.width / 2;
-      const centerY = () => canvas.height / 2;
-      const half = Math.floor(bufferLength / 2);
+    // Légère traînée lumineuse (effet persistance)
+    ctx.fillStyle = "rgba(14, 14, 20, 0.2)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      function draw() {
-        analyser.getByteFrequencyData(dataArrayLocal);
+    // Dégradé radial léger
+    const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
+    grad.addColorStop(0, "#94d7ff");
+    grad.addColorStop(1, "#d4af7f");
+    ctx.strokeStyle = grad;
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.lineWidth = 2;
-        ctx.lineCap = 'round';
-        ctx.strokeStyle = '#d4af7f';
+    ctx.lineWidth = 2;
+    ctx.lineCap = "round";
+    ctx.beginPath();
 
-        const midX = canvas.width / 2;
-        const cY = centerY();
-        const wHalf = halfWidth();
+    const sliceWidth = canvas.width / bufferLength;
+    let x = 0;
+    const centerY = canvas.height / 2;
 
-        // gauche
-        ctx.beginPath();
-        for (let i = 0; i < half; i++) {
-          const shiftedIndex = Math.min(bufferLength - 1, i + 5);
-          const rawValue = dataArrayLocal[shiftedIndex] / 255;
-          const value = Math.sqrt(rawValue);
-          const x = midX - (i / Math.max(1, half - 1)) * wHalf;
-          const y = cY - value * amplitude;
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.stroke();
+    for (let i = 0; i < bufferLength; i++) {
+      const v = dataArrayLocal[i] / 255;
+      const y = centerY - (Math.sqrt(v) * amplitude);
 
-        // droite
-        ctx.beginPath();
-        for (let i = 0; i < half; i++) {
-          const shiftedIndex = Math.min(bufferLength - 1, i + 5);
-          const rawValue = dataArrayLocal[shiftedIndex] / 255;
-          const value = Math.sqrt(rawValue);
-          const x = midX + (i / Math.max(1, half - 1)) * wHalf;
-          const y = cY - value * amplitude;
-          if (i === 0) ctx.moveTo(x, y);
-          else ctx.lineTo(x, y);
-        }
-        ctx.stroke();
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.quadraticCurveTo(x - sliceWidth / 2, centerY, x, y);
 
-        animationId = requestAnimationFrame(draw);
-      }
-      draw();
+      x += sliceWidth;
     }
 
-    // code secret 749
-    let inputBuffer = "";
-    document.addEventListener("keydown", e => {
-      if (/^[0-9]$/.test(e.key)) {
-        inputBuffer += e.key;
-        if (inputBuffer.length > 3) inputBuffer = inputBuffer.slice(-3);
-        if (inputBuffer === "749") {
-          window.location.href = "https://discord.gg/tHqVHMNKNu";
-        }
-      }
-    });
+    ctx.stroke();
+    animationId = requestAnimationFrame(draw);
+  }
 
+  draw();
+}
 
+// --- Code secret 749 ---
+let inputBuffer = "";
+document.addEventListener("keydown", e => {
+  if (/^[0-9]$/.test(e.key)) {
+    inputBuffer += e.key;
+    if (inputBuffer.length > 3) inputBuffer = inputBuffer.slice(-3);
+    if (inputBuffer === "749") {
+      window.location.href = "https://discord.gg/tHqVHMNKNu";
+    }
+  }
+});
