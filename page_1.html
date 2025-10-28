@@ -3,9 +3,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>page_1</title>
+  <title>Les Enfants d’Argax — Page 1</title>
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* Fade-in global pour la transition depuis index.html */
+    body {
+      opacity: 0;
+      transition: opacity 2s ease;
+    }
+
+    body.loaded {
+      opacity: 1;
+    }
+
+    /* Bouton “Rejoins-nous” */
+    .cta-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 28px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #0e0e14;
+      background-color: #f4f1e7;
+      border: none;
+      border-radius: 40px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .cta-button:hover {
+      background-color: #aee7ff;
+      transform: scale(1.05);
+    }
+
+    /* Fade-out pour la sortie vers page_2 */
+    .fade-out {
+      animation: fadeOut 1.5s ease forwards;
+    }
+
+    @keyframes fadeOut {
+      0% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0; transform: scale(0.96); }
+    }
+
+    /* Voile noir de transition */
+    .blackout {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0e0e14;
+      opacity: 0;
+      z-index: 200;
+      pointer-events: none;
+      transition: opacity 1s ease;
+    }
+
+    .blackout.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+  </style>
 </head>
+
 <body>
   <!-- Fond étoilé -->
   <div class="stars"></div>
@@ -15,48 +78,43 @@
     <div class="logo-container">
       <img src="lesEnfantsdArgax.svg" alt="Logo Les Enfants d’Argax" class="logo">
     </div>
-	<div class="separator"></div>
+    <div class="separator"></div>
   </header>
 
   <!-- Zone centrale -->
   <main class="content">
-  <p>
-  
-  </p>  
     <h2>✦ Bienvenue parmi les Enfants d’Argax</h2>
     <p>Ce n’est pas une faction, ce n’est pas une armée, ce n’est pas une entreprise.<br>
     C’est un regroupement libre de pilotes, qui partagent le goût de l’exploration, de l’autonomie, de l’insoumission.</p>
 
     <p>Ici, nul dogme, nulle hiérarchie figée.<br>
     Chacun vient avec ses rêves, ses vaisseaux cabossés, ses silences et ses cartes d’étoiles griffonnées à la main.<br>
-    Ici, on ne vous demandera pas d’obéir...
-    </p>
+    Ici, on ne vous demandera pas d’obéir...</p>
 
     <h2>✦ Qui sommes-nous ?</h2>
     <p>Nés d’un éclat de révolte silencieuse et d’un désir profond d’explorer autrement, <strong>Les Enfants d’Argax</strong> rassemblent des pilotes, rêveurs et nomades en quête de sens dans l’immensité galactique.
     Nous sommes un groupe en mouvement, une communauté choisie, sans QG, sans chaînes, sans maître.</p>
 
-<section class="origin-section">
-	<h2>✦ Notre origine</h2>
-    <p>La signification d’<strong>Argax</strong> reste un mystère. Personne ne sait vraiment. Mais ceux qui entendent cet appel reconnaissent en lui un besoin partagé : celui de construire autrement, de se réinventer à la marge, loin des dogmes.</p>
-	
-  <div class="origin-options">
-    <button class="origin-card" data-origin="1">🌟 </button>
-    <button class="origin-card" data-origin="2">📡 </button>
-    <button class="origin-card" data-origin="3">🧬 </button>
-    <button class="origin-card" data-origin="4">🔮 </button>
-  </div>
-  <div class="origin-detail" id="origin-detail">
-  </div>
+    <section class="origin-section">
+      <h2>✦ Notre origine</h2>
+      <p>La signification d’<strong>Argax</strong> reste un mystère. Personne ne sait vraiment. Mais ceux qui entendent cet appel reconnaissent en lui un besoin partagé : celui de construire autrement, de se réinventer à la marge, loin des dogmes.</p>
 
-</section>
+      <div class="origin-options">
+        <button class="origin-card" data-origin="1">🌟</button>
+        <button class="origin-card" data-origin="2">📡</button>
+        <button class="origin-card" data-origin="3">🧬</button>
+        <button class="origin-card" data-origin="4">🔮</button>
+      </div>
+
+      <div class="origin-detail" id="origin-detail"></div>
+    </section>
 
     <h2>✦ Ce que nous faisons</h2>
     <ul>
-      <li> Exploration libre vers les routes oubliées</li>
-      <li> Soutien mutuel & transmission</li>
-      <li> Réinvention de l’ailleurs et du maintenant</li>
-      <li> Engagement mesuré, selon la conscience de chacun</li>
+      <li>Exploration libre vers les routes oubliées</li>
+      <li>Soutien mutuel & transmission</li>
+      <li>Réinvention de l’ailleurs et du maintenant</li>
+      <li>Engagement mesuré, selon la conscience de chacun</li>
     </ul>
 
     <h2>✦ Ce que nous ne sommes pas</h2>
@@ -65,44 +123,75 @@
     Nous ne cherchons pas à dominer un territoire.</p>
 
     <blockquote>
-	<ul>
-      Nous ne suivons que les étoiles.<br>
-      La liberté n’a pas de QG.<br>
-      L’éveil est une route, pas une destination.<br>
-	</ul>
+      <ul>
+        Nous ne suivons que les étoiles.<br>
+        La liberté n’a pas de QG.<br>
+        L’éveil est une route, pas une destination.<br>
+      </ul>
     </blockquote>
-	
-	<section class="join">
-	<h2>✦ Rejoindre les Enfants</h2>
-	<p>Tu entends l’écho d’Argax ? Tu veux faire un bout de route avec d’autres éveillés, sans renier ta propre voie ?</p>
-	<a class="cta-button" href="page_2.html">Rejoins-nous</a>
-	</section>
 
-  </main>  
+    <section class="join">
+      <h2>✦ Rejoindre les Enfants</h2>
+      <p>Tu entends l’écho d’Argax ? Tu veux faire un bout de route avec d’autres éveillés, sans renier ta propre voie ?</p>
+      <a class="cta-button" id="joinButton">Rejoins-nous</a>
+    </section>
+  </main>
 
   <!-- Footer fixe -->
   <footer class="footer">
-	<div class="separator"></div>
+    <div class="separator"></div>
     <p>&copy; 3311 – Les Enfants d’Argax. Aucun QG. Juste des étoiles.</p>
   </footer>
 
-   <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const originDetail = document.getElementById("origin-detail");
+  <!-- Voile noir de transition -->
+  <div class="blackout" id="blackout"></div>
 
+  <!-- Sons -->
+  <audio id="introSound" autoplay loop>
+    <source src="Argax_intro.mp3" type="audio/mpeg">
+  </audio>
+
+  <audio id="clickSound">
+    <source src="clic.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // Fondu d'entrée global
+    window.addEventListener('load', () => {
+      document.body.classList.add('loaded');
+    });
+
+    const introSound = document.getElementById('introSound');
+    const clickSound = document.getElementById('clickSound');
+    const joinButton = document.getElementById('joinButton');
+    const blackout = document.getElementById('blackout');
+
+    // === FONDU D’ENTRÉE SONORE ===
+    introSound.volume = 0;
+    const fadeDuration = 4000;
+    const targetVolume = 0.4;
+    const step = targetVolume / (fadeDuration / 100);
+
+    const fadeIn = setInterval(() => {
+      if (introSound.volume < targetVolume) {
+        introSound.volume = Math.min(introSound.volume + step, targetVolume);
+      } else {
+        clearInterval(fadeIn);
+      }
+    }, 100);
+
+    // === CHOIX D’ORIGINE ===
+    const originDetail = document.getElementById("origin-detail");
     const texts = {
       1: `<h3>Une étoile oubliée</h3>
       Argax serait le nom d’une étoile morte, disparue des cartes, mais que certains explorateurs affirment avoir vue pulser dans les confins.<br>
-      <em>“Argax était censée s’être éteinte il y a des millénaires. Mais certains ont vu sa lueur, fine et tremblante, au bord du néant. Un battement dans l’obscurité. Une promesse.”</em>`,
-
+      <em>“Argax était censée s’être éteinte il y a des millénaires. Mais certains ont vu sa lueur, fine et tremblante, au bord du néant. Une promesse.”</em>`,
       2: `<h3>Un ancien signal</h3>
       Argax désigne un code, une séquence, un signal mystérieux, capté une fois dans le vide profond. Incompréhensible mais obsédant.<br>
       <em>“C’est ainsi que nous l’avons nommé : Argax. Il ne nous disait rien, mais nous savions qu’il nous parlait.”</em>`,
-
       3: `<h3>Un nom personnel refondu</h3>
       Argax serait l’anagramme ou l’écho déformé d’un nom oublié, d’un ancien vaisseau, d’un mentor perdu, ou même d’Ivard lui-même.<br>
       <em>“Argax… ce n’est qu’un mot. Mais il me suit depuis l’enfance. Comme si tout ce que je fuyais y trouvait refuge.”</em>`,
-
       4: `<h3>Une entité mythique</h3>
       Argax devient une sorte d’archétype, un mythe fondateur, ni tout à fait réel ni tout à fait abstrait.<br>
       <em>“Nous ne savons pas ce qu’est Argax. Une présence ? Un souvenir ? Un concept ? Peu importe. C’est ce qui nous rassemble.”</em>`
@@ -111,18 +200,33 @@
     document.querySelectorAll(".origin-card").forEach(btn => {
       btn.addEventListener("click", () => {
         const id = btn.dataset.origin;
-
-        // Pour le fade-out/in
-        originDetail.classList.remove("fade-in");
-        void originDetail.offsetWidth; // Trick to restart animation
-        originDetail.innerHTML = texts[id];
-        originDetail.classList.add("fade-in");
+        originDetail.style.opacity = 0;
+        setTimeout(() => {
+          originDetail.innerHTML = texts[id];
+          originDetail.style.opacity = 1;
+        }, 300);
       });
     });
-  });
-</script>
 
+    // === TRANSITION VERS PAGE_2 ===
+    joinButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      clickSound.currentTime = 0;
+      clickSound.play();
+      blackout.classList.add('active');
+
+      const fadeOut = setInterval(() => {
+        if (introSound.volume > 0.02) {
+          introSound.volume -= 0.02;
+        } else {
+          clearInterval(fadeOut);
+        }
+      }, 100);
+
+      setTimeout(() => {
+        window.location.href = 'page_2.html';
+      }, 1000);
+    });
+  </script>
 </body>
 </html>
-
-
