@@ -1,7 +1,4 @@
-    const intro = document.getElementById("introSound");
-    const clickSound = document.getElementById("clickSound");
-    const message = document.getElementById("messageSound");
-
+    const audio = document.getElementById("audio");
     const line1 = document.getElementById("line1");
     const line2 = document.getElementById("line2");
     const line3 = document.getElementById("line3");
@@ -47,9 +44,9 @@
       document.querySelectorAll(".signal-circle").forEach(c => c.classList.add("pulse"));
 
       // timing des phrases (en ms)
-      setTimeout(() => line1.classList.add("visible"), 79530);    // phrase 1
-      setTimeout(() => line2.classList.add("visible", "pulse"), 83370); // phrase 2
-      setTimeout(() => line3.classList.add("visible"), 87360);    // phrase 3
+      setTimeout(() => line1.classList.add("visible"), 81220);    // phrase 1
+      setTimeout(() => line2.classList.add("visible", "pulse"), 83940); // phrase 2
+      setTimeout(() => line3.classList.add("visible"), 88230);    // phrase 3
 
       startOscilloscope();
     });
@@ -127,4 +124,3 @@
         }
       }
     });
-
