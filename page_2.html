@@ -3,66 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Transmission — Les Enfants d’Argax</title>
+  <title>Transmission</title>
   <link rel="stylesheet" href="style.css">
-
-  <style>
-    /* === FONDU D’ENTRÉE === */
-    body {
-      opacity: 0;
-      animation: fadeInBody 2s ease forwards;
-      background-color: #0e0e14;
-    }
-
-    @keyframes fadeInBody {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    /* === TRANSMISSION === */
-    .transmission-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      gap: 1.2rem;
-      padding: 5rem 2rem;
-      min-height: 60vh;
-      color: #e0e0ff;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.3rem;
-      letter-spacing: 0.5px;
-      text-shadow: 0 0 6px rgba(255,255,255,0.3);
-      opacity: 0;
-      animation: fadeInTransmission 3s ease forwards 1s;
-    }
-
-    @keyframes fadeInTransmission {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .transmission.special {
-      color: #94d7ff;
-      font-weight: bold;
-      font-size: 1.5rem;
-      letter-spacing: 1px;
-    }
-
-    /* === OSCILLOSCOPE === */
-    #oscilloscope {
-      display: block;
-      margin: 2rem auto;
-      width: 80%;
-      height: 150px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 10px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.5);
-    }
-  </style>
 </head>
-
 <body>
   <!-- Fond étoilé -->
   <div class="stars"></div>
@@ -72,69 +15,36 @@
     <div class="logo-container">
       <img src="lesEnfantsdArgax.svg" alt="Logo Les Enfants d’Argax" class="logo">
     </div>
-    <div class="separator"></div>
+	<div class="separator"></div>
   </header>
-
-  <!-- Contenu principal -->
+	
   <main class="content">
-    <div class="transmission-container">
-      <div id="line1" class="transmission">Réponds si tu es prêt.</div>
-      <div id="line2" class="transmission special">Fréquence 7-4-9.</div>
-      <div id="line3" class="transmission">Fin de transmission.</div>
-    </div>
+	  
+  <!-- Transmission texte -->
+  <div class="transmission-container">
+    <div id="line1" class="transmission">Réponds si tu es prêt.</div>
+    <div id="line2" class="transmission special">Fréquence 7-4-9.</div>
+    <div id="line3" class="transmission">Fin de transmission.</div>
+  </div>
 
-    <!-- Audio et Oscilloscope -->
-    <audio id="introSound" src="Argax_intro.mp3" loop></audio>
-    <audio id="clickSound" src="clic.mp3"></audio>
-    <audio id="messageSound" src="les-enfants-d-argax.mp3"></audio>
+    <!-- Audio et oscilloscope -->
+    <audio id="audio" src="les-enfants-d-argax.mp3"></audio>
     <canvas id="oscilloscope"></canvas>
   </main>
 
-  <!-- Footer fixe -->
+<!-- Footer fixe -->
   <footer class="footer">
-    <div class="separator"></div>
+	<div class="separator"></div>
     <p>&copy; 3311 – Les Enfants d’Argax. Aucun QG. Juste des étoiles.</p>
   </footer>
-
-  <!-- Scripts -->
-  <script>
-    const intro = document.getElementById('introSound');
-    const clickSound = document.getElementById('clickSound');
-    const message = document.getElementById('messageSound');
-
-    // Lecture automatique du fond sonore
-    intro.volume = 0.4;
-    intro.play().catch(() => { /* ignore autoplay block */ });
-
-    let hasPlayed = false;
-
-    // Lorsque l'utilisateur clique sur la page
-    document.body.addEventListener('click', () => {
-      if (hasPlayed) return;
-      hasPlayed = true;
-
-      // Jouer le son du clic
-      clickSound.play();
-
-      // Fondu du son d'ambiance
-      const fadeOut = setInterval(() => {
-        if (intro.volume > 0.02) {
-          intro.volume -= 0.02;
-        } else {
-          intro.pause();
-          clearInterval(fadeOut);
-        }
-      }, 100);
-
-      // Lancer le message après le clic
-      setTimeout(() => {
-        message.volume = 0.6;
-        message.play();
-      }, 500);
-    });
-  </script>
-
-  <!-- Script externe (oscilloscope) -->
+  
+  <!-- Script externe -->
   <script src="page_2.js"></script>
 </body>
 </html>
+
+
+
+
+
+
