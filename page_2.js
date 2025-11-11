@@ -103,9 +103,9 @@ function startTransmissionSequence() {
 
   // On synchronise les apparitions avec la bande-son (approx.)
   // Adapte les timings selon la durée de ton fichier audio.
-  setTimeout(() => l1.classList.add('visible'), 2000);   // 2s
-  setTimeout(() => l2.classList.add('visible'), 6500);   // 6.5s
-  setTimeout(() => l3.classList.add('visible'), 10500);  // 10.5s
+  setTimeout(() => line1.classList.add("visible"), 79530);
+  setTimeout(() => line2.classList.add("visible", "pulse"), 83370);
+  setTimeout(() => line3.classList.add("visible"), 87360);
 }
 
 // ===========================
@@ -115,3 +115,4 @@ window.addEventListener('beforeunload', () => {
   if (animationId) cancelAnimationFrame(animationId);
   if (audioContext) audioContext.close();
 });
+
