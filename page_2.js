@@ -2,16 +2,17 @@
 // PAGE_2.JS — Les Enfants d’Argax
 // ===========================
 
-// --- Variables globales ---
-let audioContext, analyser, source, dataArray, animationId;
-let audioElement = document.getElementById('audio');
+let audioContext, analyser, dataArray, animationId;
+let ambient, messageAudio;
+let sequenceStarted = false;
 
-// --- Initialisation globale ---
+// --- Initialisation ---
 window.addEventListener('DOMContentLoaded', async () => {
   await setupAudioContext();
   startCircularVisualizer();
   playAmbientLoop();
   startTransmissionSequence();
+  enableClickForTransmission();
 });
 
 // ===========================
@@ -23,8 +24,11 @@ async function setupAudioContext() {
   analyser.fftSize = 256;
   dataArray = new Uint8Array(analyser.frequencyBinCount);
 
-  // Connecter la balise audio à l’analyseur et à la sortie
-  source = audioContext.createMediaElementSource(audioElement);
+  // Ambiance principale
+  ambient = new Audio('Argax_intro.mp3');
+  ambient.loop = true;
+  ambient.volume = 0.7;
+  const source = audioContext.createMediaElementSource(ambient);
   source.connect(analyser);
   analyser.connect(audioContext.destination);
 }
@@ -33,79 +37,94 @@ async function setupAudioContext() {
 // AMBIANCE AUDIO
 // ===========================
 function playAmbientLoop() {
-  audioElement.loop = true;
-  audioElement.volume = 0.8;
-  audioElement.play().catch(err => {
-    console.warn("Lecture auto bloquée, interaction utilisateur requise :", err);
+  ambient.play().catch(() => {
+    console.warn("Lecture auto bloquée — cliquez pour activer le son.");
   });
 }
 
 // ===========================
-// VISUALISATION SVG (Anneau)
+// VISUALISATION CIRCULAIRE (SVG)
 // ===========================
 function startCircularVisualizer() {
   const ring = document.getElementById('osc-ring');
-  const base = document.getElementById('osc-base');
+  if (!ring) return;
 
-  const baseRadius = 70;
-  const circumference = 2 * Math.PI * baseRadius;
+  const radius = 70;
+  const circumference = 2 * Math.PI * radius;
   ring.setAttribute('stroke-dasharray', String(circumference));
 
   const bufferLength = analyser.frequencyBinCount;
   const dataArrayLocal = new Uint8Array(bufferLength);
 
   let t = 0;
-  function drawSVG() {
+  function draw() {
     analyser.getByteFrequencyData(dataArrayLocal);
-
-    // Calcul RMS global
     let sum = 0;
     for (let i = 0; i < bufferLength; i++) {
       const v = dataArrayLocal[i] / 255;
       sum += v * v;
     }
-    const rms = Math.sqrt(sum / bufferLength); // 0 à 1 environ
-
-    // Modulation du dash (longueur visible de l’anneau)
+    const rms = Math.sqrt(sum / bufferLength);
     const visible = Math.max(0.05, Math.min(1, rms * 1.8));
     const offset = circumference * (1 - visible);
     ring.style.strokeDashoffset = String(offset);
-
-    // Effets de pulsation et wobble
-    const pulse = 1 + rms * 0.08;
-    const wobble = 1 + Math.sin(t * 0.02) * 0.005 + rms * 0.02;
-    ring.style.transform = `translate3d(0,0,0) scale(${pulse * wobble})`;
+    const pulse = 1 + rms * 0.15;
+    ring.style.transform = `scale(${pulse})`;
     ring.style.transformOrigin = '110px 110px';
-
-    // Largeur et opacité
-    const sw = 2 + rms * 6;
-    ring.setAttribute('stroke-width', String(sw));
     ring.style.opacity = String(0.6 + rms * 0.5);
-
-    // Rotation douce
     t += 1;
-    const rot = (t * 0.02) + rms * 12;
-    ring.style.rotate = `${rot}deg`;
-
-    animationId = requestAnimationFrame(drawSVG);
+    ring.style.rotate = `${t * 0.5}deg`;
+    animationId = requestAnimationFrame(draw);
   }
-
-  drawSVG();
+  draw();
 }
 
 // ===========================
-// SYNCHRONISATION DES PHRASES
+// SYNCHRONISATION DU TEXTE
 // ===========================
 function startTransmissionSequence() {
   const l1 = document.getElementById('line1');
   const l2 = document.getElementById('line2');
   const l3 = document.getElementById('line3');
 
-  // On synchronise les apparitions avec la bande-son (approx.)
-  // Adapte les timings selon la durée de ton fichier audio.
-  setTimeout(() => line1.classList.add("visible"), 79530);
-  setTimeout(() => line2.classList.add("visible", "pulse"), 83370);
-  setTimeout(() => line3.classList.add("visible"), 87360);
+  setTimeout(() => l1.classList.add('visible'), 2000);
+  setTimeout(() => l2.classList.add('visible'), 6500);
+  setTimeout(() => l3.classList.add('visible'), 10500);
+}
+
+// ===========================
+// GESTION DU CLIC POUR LANCER LA TRANSMISSION
+// ===========================
+function enableClickForTransmission() {
+  document.body.addEventListener('click', async () => {
+    // Évite double clics
+    if (sequenceStarted) return;
+    sequenceStarted = true;
+
+    // 1. Stop la boucle d'ambiance
+    ambient.pause();
+
+    // 2. Joue le son du clic
+    const clickSound = new Audio('clic.mp3');
+    clickSound.volume = 0.8;
+    await clickSound.play().catch(err => console.warn(err));
+
+    // 3. Lance la transmission principale
+    messageAudio = new Audio('les-enfants-d-argax.mp3');
+    messageAudio.volume = 1.0;
+
+    const msgSource = audioContext.createMediaElementSource(messageAudio);
+    msgSource.connect(analyser);
+    analyser.connect(audioContext.destination);
+
+    await messageAudio.play().catch(err => console.warn(err));
+
+    // 4. Quand la transmission se termine, on relance la boucle
+    messageAudio.addEventListener('ended', () => {
+      sequenceStarted = false;
+      playAmbientLoop();
+    });
+  });
 }
 
 // ===========================
@@ -115,4 +134,3 @@ window.addEventListener('beforeunload', () => {
   if (animationId) cancelAnimationFrame(animationId);
   if (audioContext) audioContext.close();
 });
-
