@@ -27,7 +27,15 @@
     </div>
 
     <!-- Oscilloscope -->
-    <canvas id="oscilloscope"></canvas>
+  <!-- Visualisation SVG  -->
+<svg id="oscilloscope" viewBox="0 0 220 220" aria-hidden="true" focusable="false">
+  <!-- cercle de base (anneau discret) -->
+  <circle id="osc-base" cx="110" cy="110" r="70" fill="none" stroke="rgba(212,175,127,0.12)" stroke-width="8"/>
+  <!-- anneau animé -->
+  <circle id="osc-ring" cx="110" cy="110" r="70" fill="none" stroke="#d4af7f" stroke-width="4" stroke-linecap="round"
+          stroke-dasharray="440" stroke-dashoffset="0" style="filter: drop-shadow(0 0 12px rgba(212,175,127,0.25));" />
+</svg>
+
   </main>
 
   <!-- Footer fixe -->
@@ -45,3 +53,4 @@
   <script src="page_2.js"></script>
 </body>
 </html>
+
