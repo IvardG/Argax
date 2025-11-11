@@ -1,118 +1,121 @@
 const intro = document.getElementById("introSound");
-const clickSound = document.getElementById("clickSound");
+const click = document.getElementById("clickSound");
 const message = document.getElementById("messageSound");
+const canvas = document.getElementById("oscilloscope");
+const ctx = canvas.getContext("2d");
 
 const line1 = document.getElementById("line1");
 const line2 = document.getElementById("line2");
 const line3 = document.getElementById("line3");
-const canvas = document.getElementById("oscilloscope");
-const ctx = canvas.getContext("2d");
 
-let animationId = null;
 let audioCtx = null;
 let analyser = null;
 let dataArray = null;
-let hasStarted = false;
+let animationId = null;
+let sequenceStarted = false;
 
-// --- Redimensionnement du canvas ---
+// Ajustement du canvas
 function resizeCanvas() {
-  canvas.width = canvas.clientWidth;
-  canvas.height = 120;
+  canvas.width = window.innerWidth;
+  canvas.height = 400;
 }
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
-// --- Initialisation audio après interaction utilisateur ---
+// Clic pour passer de l'intro à la transmission
 document.body.addEventListener("click", async () => {
-  if (hasStarted) return;
-  hasStarted = true;
+  if (sequenceStarted) return;
+  sequenceStarted = true;
 
-  // Lecture du clic
-  clickSound.play();
+  intro.pause();
+  intro.currentTime = 0;
+  click.play();
 
-  // Fade-out de la boucle d’intro
-  const fadeOut = setInterval(() => {
-    if (intro.volume > 0.02) {
-      intro.volume -= 0.02;
-    } else {
-      intro.pause();
-      clearInterval(fadeOut);
-    }
-  }, 100);
-
-  // Lancement du message
-  setTimeout(async () => {
-    message.volume = 0.7;
-
-    // Création du contexte audio
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const src = audioCtx.createMediaElementSource(message);
-    analyser = audioCtx.createAnalyser();
-    analyser.fftSize = 256;
-    src.connect(analyser);
-    analyser.connect(audioCtx.destination);
-    dataArray = new Uint8Array(analyser.frequencyBinCount);
-
-    try { await message.play(); } catch(e){ console.warn(e); }
-
-    // Lancement de l’oscilloscope et des phrases
-    startOscilloscope();
-    startTransmissionText();
-  }, 400);
+  setTimeout(() => {
+    fadeInMessage();
+  }, 300);
 });
 
-// --- Apparition progressive du texte ---
-function startTransmissionText() {
-  setTimeout(() => line1.classList.add("visible"), 2000);
-  setTimeout(() => line2.classList.add("visible", "pulse"), 5000);
-  setTimeout(() => line3.classList.add("visible"), 8000);
+// Fade-in du message + visualisation circulaire
+function fadeInMessage() {
+  message.volume = 0;
+  message.play();
+
+  const fadeInterval = setInterval(() => {
+    if (message.volume < 1) message.volume = Math.min(1, message.volume + 0.02);
+    else clearInterval(fadeInterval);
+  }, 100);
+
+  setupAudioContext();
+  startCircularVisualizer();
+  startTransmissionSequence();
 }
 
-// --- Oscilloscope cosmique ---
-function startOscilloscope() {
+// Prépare le contexte audio
+function setupAudioContext() {
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const src = audioCtx.createMediaElementSource(message);
+  analyser = audioCtx.createAnalyser();
+  analyser.fftSize = 256;
+  src.connect(analyser);
+  analyser.connect(audioCtx.destination);
+  dataArray = new Uint8Array(analyser.frequencyBinCount);
+}
+
+// Oscilloscope circulaire
+function startCircularVisualizer() {
   const bufferLength = analyser.frequencyBinCount;
   const dataArrayLocal = new Uint8Array(bufferLength);
-  const amplitude = 50;
 
   function draw() {
     analyser.getByteFrequencyData(dataArrayLocal);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Légère traînée lumineuse (effet persistance)
-    ctx.fillStyle = "rgba(14, 14, 20, 0.2)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    const radius = 100;
+    const points = 128; // nombre de points autour du cercle
+    const angleStep = (Math.PI * 2) / points;
 
-    // Dégradé radial léger
-    const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
-    grad.addColorStop(0, "#94d7ff");
-    grad.addColorStop(1, "#d4af7f");
-    ctx.strokeStyle = grad;
-
-    ctx.lineWidth = 2;
-    ctx.lineCap = "round";
     ctx.beginPath();
+    for (let i = 0; i < points; i++) {
+      const value = dataArrayLocal[i % bufferLength] / 255;
+      const amplitude = radius + value * 80;
+      const angle = i * angleStep;
 
-    const sliceWidth = canvas.width / bufferLength;
-    let x = 0;
-    const centerY = canvas.height / 2;
-
-    for (let i = 0; i < bufferLength; i++) {
-      const v = dataArrayLocal[i] / 255;
-      const y = centerY - (Math.sqrt(v) * amplitude);
+      const x = cx + Math.cos(angle) * amplitude;
+      const y = cy + Math.sin(angle) * amplitude;
 
       if (i === 0) ctx.moveTo(x, y);
-      else ctx.quadraticCurveTo(x - sliceWidth / 2, centerY, x, y);
-
-      x += sliceWidth;
+      else ctx.lineTo(x, y);
     }
+    ctx.closePath();
 
+    // Halo doux et couleur dorée
+    ctx.strokeStyle = "#d4af7f";
+    ctx.shadowBlur = 20;
+    ctx.shadowColor = "#d4af7f";
+    ctx.lineWidth = 2;
     ctx.stroke();
+
     animationId = requestAnimationFrame(draw);
   }
 
   draw();
 }
 
-// --- Code secret 749 ---
+// Synchronisation des phrases avec la bande son
+function startTransmissionSequence() {
+  setTimeout(() => line1.classList.add("visible"), 79530);
+  setTimeout(() => line2.classList.add("visible", "pulse"), 83370);
+  setTimeout(() => line3.classList.add("visible"), 87360);
+
+  message.addEventListener("ended", () => {
+    cancelAnimationFrame(animationId);
+  });
+}
+
+// Code secret "749"
 let inputBuffer = "";
 document.addEventListener("keydown", e => {
   if (/^[0-9]$/.test(e.key)) {
