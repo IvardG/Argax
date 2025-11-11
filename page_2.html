@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Les Enfants d’Argax — Page 2</title>
+  <title>Les Enfants d’Argax — Transmission</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,37 +15,33 @@
     <div class="logo-container">
       <img src="lesEnfantsdArgax.svg" alt="Logo Les Enfants d’Argax" class="logo">
     </div>
-	<div class="separator"></div>
+    <div class="separator"></div>
   </header>
-	
-  <main class="content">
-	  
-  <!-- Transmission texte -->
-  <div class="transmission-container">
-    <div id="line1" class="transmission">Réponds si tu es prêt.</div>
-    <div id="line2" class="transmission special">Fréquence 7-4-9.</div>
-    <div id="line3" class="transmission">Fin de transmission.</div>
-  </div>
 
-    <!-- Audio et oscilloscope -->
-    <audio id="audio" src="les-enfants-d-argax.mp3"></audio>
+  <main class="content">
+    <!-- Transmission texte -->
+    <div class="transmission-container">
+      <div id="line1" class="transmission">Réponds si tu es prêt.</div>
+      <div id="line2" class="transmission special">Fréquence 7-4-9.</div>
+      <div id="line3" class="transmission">Fin de transmission.</div>
+    </div>
+
+    <!-- Oscilloscope -->
     <canvas id="oscilloscope"></canvas>
   </main>
 
-<!-- Footer fixe -->
+  <!-- Footer fixe -->
   <footer class="footer">
-	<div class="separator"></div>
+    <div class="separator"></div>
     <p>&copy; 3311 – Les Enfants d’Argax. Aucun QG. Juste des étoiles.</p>
   </footer>
-  
+
+  <!-- Audio -->
+  <audio id="introSound" src="Argax_intro.mp3" autoplay loop></audio>
+  <audio id="clickSound" src="clic.mp3"></audio>
+  <audio id="messageSound" src="les-enfants-d-argax.mp3"></audio>
+
   <!-- Script externe -->
   <script src="page_2.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
