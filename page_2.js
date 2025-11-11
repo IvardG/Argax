@@ -87,9 +87,10 @@ function startTransmissionSequence() {
   const l2 = document.getElementById('line2');
   const l3 = document.getElementById('line3');
 
-  setTimeout(() => l1.classList.add('visible'), 2000);
-  setTimeout(() => l2.classList.add('visible'), 6500);
-  setTimeout(() => l3.classList.add('visible'), 10500);
+  setTimeout(() => line1.classList.add("visible"), 79530);
+  setTimeout(() => line2.classList.add("visible", "pulse"), 83370);
+  setTimeout(() => line3.classList.add("visible"), 87360);
+
 }
 
 // ===========================
@@ -134,3 +135,4 @@ window.addEventListener('beforeunload', () => {
   if (animationId) cancelAnimationFrame(animationId);
   if (audioContext) audioContext.close();
 });
+
