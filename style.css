@@ -369,6 +369,86 @@ html {
   0%,100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
   50% { transform: scale(1.05) rotate(1deg); opacity: 1; }
 }
+/* --- Halo et fond vaporeux --- */
+body {
+  margin: 0;
+  overflow: hidden;
+  background: radial-gradient(ellipse at center, #0b0c10 0%, #000000 100%);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Halo doré vaporeux */
+.halo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle at center, rgba(212, 175, 55, 0.35) 0%, rgba(212, 175, 55, 0.05) 70%, transparent 100%);
+  filter: blur(90px);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  opacity: 0;
+  animation: fadeIn 6s ease-out 2s forwards, slowRotate 180s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Anneau SVG centré */
+#ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+/* Textes */
+.line {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  font-family: 'Cinzel', serif;
+  color: #C0C0C0;
+  font-size: 1.2rem;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  z-index: 3;
+}
+
+.line.visible {
+  opacity: 1;
+}
+
+.glitch {
+  color: #D4AF37;
+  animation: glitch 0.1s infinite;
+}
+
+/* --- Animations --- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes slowRotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes glitch {
+  0% { text-shadow: 2px 0 #8B1E3F, -2px 0 #2E4053; }
+  20% { text-shadow: -2px -2px #8B1E3F, 2px 2px #D4AF37; }
+  40% { text-shadow: 2px 2px #D4AF37, -2px -2px #8B1E3F; }
+  60% { text-shadow: -2px 2px #8B1E3F, 2px -2px #2E4053; }
+  80% { text-shadow: 2px -2px #D4AF37, -2px 2px #8B1E3F; }
+  100% { text-shadow: -2px 0 #8B1E3F, 2px 0 #2E4053; }
+}
 
 
 
