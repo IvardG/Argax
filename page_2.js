@@ -1,18 +1,16 @@
 // ===========================
-// PAGE_2.JS — Les Enfants d’Argax
+// PAGE_2.JS — Transmission directe, code secret caché
 // ===========================
 
 let audioContext, analyser, dataArray, animationId;
-let ambient, messageAudio;
-let sequenceStarted = false;
+let messageAudio;
 
 // --- Initialisation ---
 window.addEventListener('DOMContentLoaded', async () => {
   await setupAudioContext();
   startCircularVisualizer();
-  playAmbientLoop();
+  playTransmission();
   startTransmissionSequence();
-  enableClickForTransmission();
 });
 
 // ===========================
@@ -23,23 +21,24 @@ async function setupAudioContext() {
   analyser = audioContext.createAnalyser();
   analyser.fftSize = 256;
   dataArray = new Uint8Array(analyser.frequencyBinCount);
-
-  // Ambiance principale
-  ambient = new Audio('Argax_intro.mp3');
-  ambient.loop = true;
-  ambient.volume = 0.7;
-  const source = audioContext.createMediaElementSource(ambient);
-  source.connect(analyser);
-  analyser.connect(audioContext.destination);
 }
 
 // ===========================
-// AMBIANCE AUDIO
+// LECTURE DE L’AUDIO
 // ===========================
-function playAmbientLoop() {
-  ambient.play().catch(() => {
-    console.warn("Lecture auto bloquée — cliquez pour activer le son.");
-  });
+async function playTransmission() {
+  messageAudio = new Audio('les-enfants-d-argax.mp3');
+  messageAudio.volume = 1.0;
+
+  const msgSource = audioContext.createMediaElementSource(messageAudio);
+  msgSource.connect(analyser);
+  analyser.connect(audioContext.destination);
+
+  try {
+    await messageAudio.play();
+  } catch (err) {
+    console.warn("Lecture bloquée par le navigateur : interaction requise.", err);
+  }
 }
 
 // ===========================
@@ -87,46 +86,25 @@ function startTransmissionSequence() {
   const l2 = document.getElementById('line2');
   const l3 = document.getElementById('line3');
 
-  setTimeout(() => line1.classList.add("visible"), 79530);
-  setTimeout(() => line2.classList.add("visible", "pulse"), 83370);
-  setTimeout(() => line3.classList.add("visible"), 87360);
-
+  // Ajuste ces timings en ms pour caler sur la bande son
+  setTimeout(() => l1.classList.add('visible'), 2000);
+  setTimeout(() => l2.classList.add('visible'), 6500);
+  setTimeout(() => l3.classList.add('visible'), 10500);
 }
 
 // ===========================
-// GESTION DU CLIC POUR LANCER LA TRANSMISSION
+// CODE SECRET (inchangé)
 // ===========================
-function enableClickForTransmission() {
-  document.body.addEventListener('click', async () => {
-    // Évite double clics
-    if (sequenceStarted) return;
-    sequenceStarted = true;
-
-    // 1. Stop la boucle d'ambiance
-    ambient.pause();
-
-    // 2. Joue le son du clic
-    const clickSound = new Audio('clic.mp3');
-    clickSound.volume = 0.8;
-    await clickSound.play().catch(err => console.warn(err));
-
-    // 3. Lance la transmission principale
-    messageAudio = new Audio('les-enfants-d-argax.mp3');
-    messageAudio.volume = 1.0;
-
-    const msgSource = audioContext.createMediaElementSource(messageAudio);
-    msgSource.connect(analyser);
-    analyser.connect(audioContext.destination);
-
-    await messageAudio.play().catch(err => console.warn(err));
-
-    // 4. Quand la transmission se termine, on relance la boucle
-    messageAudio.addEventListener('ended', () => {
-      sequenceStarted = false;
-      playAmbientLoop();
-    });
-  });
-}
+let inputBuffer = "";
+document.addEventListener("keydown", e => {
+  if (/^[0-9]$/.test(e.key)) {
+    inputBuffer += e.key;
+    if (inputBuffer.length > 3) inputBuffer = inputBuffer.slice(-3);
+    if (inputBuffer === "749") {
+      window.location.href = "https://discord.gg/tHqVHMNKNu";
+    }
+  }
+});
 
 // ===========================
 // NETTOYAGE
@@ -135,4 +113,3 @@ window.addEventListener('beforeunload', () => {
   if (animationId) cancelAnimationFrame(animationId);
   if (audioContext) audioContext.close();
 });
-
