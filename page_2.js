@@ -1,4 +1,11 @@
+/ === PAGE_2.JS — Version Transmission Cosmique ===
+// Lecture automatique du message + visualisation circulaire + texte synchronisé + code secret
+
 window.addEventListener("DOMContentLoaded", () => {
+  const audio = new Audio("les-enfants-d-argax.mp3");
+  audio.volume = 1.0;
+  audio.play();
+
   // ===== Sélecteurs =====
   const audio = document.getElementById("audio");
   const l1 = document.getElementById("line1");
