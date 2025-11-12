@@ -87,9 +87,9 @@ function startTransmissionSequence() {
   const l3 = document.getElementById('line3');
 
   // Ajuste ces timings en ms pour caler sur la bande son
-  setTimeout(() => l1.classList.add('visible'), 2000);
-  setTimeout(() => l2.classList.add('visible'), 6500);
-  setTimeout(() => l3.classList.add('visible'), 10500);
+  setTimeout(() => l1.classList.add('visible'), 79530);
+  setTimeout(() => l2.classList.add('visible'), 83370);
+  setTimeout(() => l3.classList.add('visible'), 87360);
 }
 
 // ===========================
@@ -113,3 +113,4 @@ window.addEventListener('beforeunload', () => {
   if (animationId) cancelAnimationFrame(animationId);
   if (audioContext) audioContext.close();
 });
+
