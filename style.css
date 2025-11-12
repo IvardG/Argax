@@ -353,6 +353,22 @@ html {
 .transmission.visible {
   opacity: 1;
 }
+/* ===== Glitch effect ===== */
+.transmission.glitch {
+  color: #D4AF37;
+  text-shadow: 0 0 5px #8B1E3F, 0 0 15px #D4AF37;
+  filter: contrast(130%) brightness(120%);
+}
+
+/* Anneau d’Argax (centré, pulsant discrètement) */
+#argax-ring svg {
+  animation: haloPulse 6s ease-in-out infinite;
+  opacity: 0.8;
+}
+@keyframes haloPulse {
+  0%,100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+  50% { transform: scale(1.05) rotate(1deg); opacity: 1; }
+}
 
 
 
