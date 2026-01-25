@@ -14,33 +14,29 @@ let dataArray = null;
 let animationId = null;
 let sequenceStarted = false;
 
-// Ajuste le canvas à la largeur de la fenêtre
+// Ajustement du canvas
 function resizeCanvas() {
-  canvas.width = canvas.clientWidth;
-  canvas.height = 120;
+  canvas.width = window.innerWidth;
+  canvas.height = 400;
 }
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 
 // Clic pour passer de l'intro à la transmission
 document.body.addEventListener("click", async () => {
-  if (sequenceStarted) return; // éviter double clic
+  if (sequenceStarted) return;
   sequenceStarted = true;
 
-  // Stop le son d’intro
   intro.pause();
   intro.currentTime = 0;
-
-  // Joue le clic
   click.play();
 
-  // Petit délai pour laisser le "clic" résonner
   setTimeout(() => {
     fadeInMessage();
   }, 300);
 });
 
-// Lance le message avec fade-in et oscilloscope
+// Fade-in du message + visualisation circulaire
 function fadeInMessage() {
   message.volume = 0;
   message.play();
@@ -51,11 +47,11 @@ function fadeInMessage() {
   }, 100);
 
   setupAudioContext();
-  startOscilloscope();
+  startCircularVisualizer();
   startTransmissionSequence();
 }
 
-// Prépare le contexte audio pour l’oscilloscope
+// Prépare le contexte audio
 function setupAudioContext() {
   audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   const src = audioCtx.createMediaElementSource(message);
@@ -66,57 +62,50 @@ function setupAudioContext() {
   dataArray = new Uint8Array(analyser.frequencyBinCount);
 }
 
-// Animation de l’oscilloscope
-function startOscilloscope() {
+// Oscilloscope circulaire
+function startCircularVisualizer() {
   const bufferLength = analyser.frequencyBinCount;
   const dataArrayLocal = new Uint8Array(bufferLength);
-  const amplitude = 50;
 
   function draw() {
     analyser.getByteFrequencyData(dataArrayLocal);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx.lineWidth = 2;
-    ctx.lineCap = "round";
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+    const radius = 100;
+    const points = 128; // nombre de points autour du cercle
+    const angleStep = (Math.PI * 2) / points;
+
+    ctx.beginPath();
+    for (let i = 0; i < points; i++) {
+      const value = dataArrayLocal[i % bufferLength] / 255;
+      const amplitude = radius + value * 80;
+      const angle = i * angleStep;
+
+      const x = cx + Math.cos(angle) * amplitude;
+      const y = cy + Math.sin(angle) * amplitude;
+
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+
+    // Halo doux et couleur dorée
     ctx.strokeStyle = "#d4af7f";
-
-    const midX = canvas.width / 2;
-    const cY = canvas.height / 2;
-    const half = Math.floor(bufferLength / 2);
-    const wHalf = canvas.width / 2;
-
-    // Gauche
-    ctx.beginPath();
-    for (let i = 0; i < half; i++) {
-      const rawValue = dataArrayLocal[i + 5] / 255;
-      const value = Math.sqrt(rawValue);
-      const x = midX - (i / (half - 1)) * wHalf;
-      const y = cY - value * amplitude;
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-    ctx.stroke();
-
-    // Droite
-    ctx.beginPath();
-    for (let i = 0; i < half; i++) {
-      const rawValue = dataArrayLocal[i + 5] / 255;
-      const value = Math.sqrt(rawValue);
-      const x = midX + (i / (half - 1)) * wHalf;
-      const y = cY - value * amplitude;
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
+    ctx.shadowBlur = 20;
+    ctx.shadowColor = "#d4af7f";
+    ctx.lineWidth = 2;
     ctx.stroke();
 
     animationId = requestAnimationFrame(draw);
   }
+
   draw();
 }
 
 // Synchronisation des phrases avec la bande son
 function startTransmissionSequence() {
-  // ces timings sont en millisecondes
   setTimeout(() => line1.classList.add("visible"), 79530);
   setTimeout(() => line2.classList.add("visible", "pulse"), 83370);
   setTimeout(() => line3.classList.add("visible"), 87360);
