@@ -162,7 +162,7 @@ blockquote {
   overflow-y: auto;
   scrollbar-width: none;
   z-index: 1;
-  padding: 0 0 3rem 0;  /* Enlever padding top, garder bottom */
+  padding: 0 0 60px 0;  /* Enlever padding top, garder bottom */
 }
 
 .content > h2:first-of-type {
