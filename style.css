@@ -25,7 +25,7 @@ h2 {
   color: #d4af7f;
   border-bottom: 1px solid #986c43;
   padding-bottom: 5px;
-  margin-top: 5em;
+  margin-top: 2em;
   margin-bottom: 1em;
   font-weight: 500;
 }
@@ -153,7 +153,7 @@ blockquote {
 /* ===== Zone centrale (content) ===== */
 .content {
   position: absolute;
-  top: 25vh;
+  top: 30vh;
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
