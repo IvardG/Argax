@@ -153,7 +153,7 @@ blockquote {
 /* ===== Zone centrale (content) ===== */
 .content {
   position: absolute;
-  top: 30vh;
+  top: 25vh;
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
