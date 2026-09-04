@@ -153,42 +153,63 @@ blockquote {
 /* ===== Zone centrale (content) ===== */
 .content {
   position: absolute;
-  top: 25vh; /* commence juste après le header */
+  top: 25vh;
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
   max-width: 1000px;
-  height: calc(100vh - 25vh - 60px); /* espace entre header et footer */
+  height: calc(100vh - 25vh - 60px);
   overflow-y: auto;
   scrollbar-width: none;
   z-index: 1;
-  padding: 2rem 0;
+  padding: 0 0 3rem 0;  /* Enlever padding top, garder bottom */
 }
 
-.content::-webkit-scrollbar {
-  display: none;
+.content > h2:first-of-type {
+  margin-top: 0;  /* Première ligne juste après le header */
 }
 
-/* ===== Effet de transparence haut/bas ===== */
+/* Voile de transparence haut/bas */
 .content {
   -webkit-mask-image: linear-gradient(
     to bottom,
     transparent 0%,
-    black 10%,
-    black 90%,
+    black 12%,      /* Voile haut plus grand */
+    black 75%,      /* Commence le voile bas plus tôt */
     transparent 100%
   );
   mask-image: linear-gradient(
     to bottom,
     transparent 0%,
-    black 10%,
-    black 90%,
+    black 12%,
+    black 75%,
     transparent 100%
   );
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
+}
+
+/* ===== Footer OPAQUE ===== */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: #0e0e14;  /* OPAQUE, pas transparent */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  z-index: 200;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 0.9em;
+  color: #f4f1e7;
 }
 
 /* ===== Scroll fluide et amorti ===== */
