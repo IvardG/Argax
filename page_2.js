@@ -1,8 +1,9 @@
 const intro = document.getElementById("introSound");
 const click = document.getElementById("clickSound");
 const message = document.getElementById("messageSound");
-const canvas = document.getElementById("oscilloscope");
-const ctx = canvas.getContext("2d");
+const spiraleSvg = document.getElementById("spirale-argax");
+const spiralePath = document.getElementById("spiral-path");
+const spiralGroup = document.getElementById("spiral-group");
 
 const line1 = document.getElementById("line1");
 const line2 = document.getElementById("line2");
@@ -13,14 +14,6 @@ let analyser = null;
 let dataArray = null;
 let animationId = null;
 let sequenceStarted = false;
-
-// Ajustement du canvas
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = 400;
-}
-resizeCanvas();
-window.addEventListener("resize", resizeCanvas);
 
 // Clic pour passer de l'intro à la transmission
 document.body.addEventListener("click", async () => {
@@ -36,7 +29,7 @@ document.body.addEventListener("click", async () => {
   }, 300);
 });
 
-// Fade-in du message + visualisation circulaire
+// Fade-in du message + visualisation spirale
 function fadeInMessage() {
   message.volume = 0;
   message.play();
@@ -47,7 +40,7 @@ function fadeInMessage() {
   }, 100);
 
   setupAudioContext();
-  startCircularVisualizer();
+  startSpiralVisualizer();
   startTransmissionSequence();
 }
 
@@ -62,41 +55,57 @@ function setupAudioContext() {
   dataArray = new Uint8Array(analyser.frequencyBinCount);
 }
 
-// Oscilloscope circulaire
-function startCircularVisualizer() {
+// Génère la spirale d'Argax
+function generateSpiral(amplitude = 1) {
+  const cx = 200;
+  const cy = 200;
+  const turns = 5; // nombre de tours de la spirale
+  const points = 300;
+  const maxRadius = 100;
+  
+  let pathData = "";
+  
+  for (let i = 0; i <= points; i++) {
+    const t = i / points;
+    const angle = t * Math.PI * 2 * turns;
+    const radius = maxRadius * t * amplitude;
+    
+    const x = cx + Math.cos(angle) * radius;
+    const y = cy + Math.sin(angle) * radius;
+    
+    if (i === 0) {
+      pathData += `M${x},${y}`;
+    } else {
+      pathData += ` L${x},${y}`;
+    }
+  }
+  
+  return pathData;
+}
+
+// Visualiseur spirale qui respire avec l'audio
+function startSpiralVisualizer() {
   const bufferLength = analyser.frequencyBinCount;
   const dataArrayLocal = new Uint8Array(bufferLength);
 
   function draw() {
     analyser.getByteFrequencyData(dataArrayLocal);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const cx = canvas.width / 2;
-    const cy = canvas.height / 2;
-    const radius = 100;
-    const points = 128; // nombre de points autour du cercle
-    const angleStep = (Math.PI * 2) / points;
-
-    ctx.beginPath();
-    for (let i = 0; i < points; i++) {
-      const value = dataArrayLocal[i % bufferLength] / 255;
-      const amplitude = radius + value * 80;
-      const angle = i * angleStep;
-
-      const x = cx + Math.cos(angle) * amplitude;
-      const y = cy + Math.sin(angle) * amplitude;
-
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
+    
+    // Calcul de l'amplitude moyenne (respiration)
+    let sum = 0;
+    for (let i = 0; i < bufferLength; i++) {
+      sum += dataArrayLocal[i];
     }
-    ctx.closePath();
+    const average = sum / bufferLength;
+    const amplitude = 0.5 + (average / 255) * 1.5; // Entre 0.5 et 2
 
-    // Halo doux et couleur dorée
-    ctx.strokeStyle = "#d4af7f";
-    ctx.shadowBlur = 20;
-    ctx.shadowColor = "#d4af7f";
-    ctx.lineWidth = 2;
-    ctx.stroke();
+    // Mise à jour de la spirale
+    const newPath = generateSpiral(amplitude);
+    spiralePath.setAttribute("d", newPath);
+    
+    // Variation d'opacité basée sur les fréquences
+    const maxFreq = Math.max(...dataArrayLocal);
+    spiralePath.style.opacity = 0.5 + (maxFreq / 255) * 0.5;
 
     animationId = requestAnimationFrame(draw);
   }
