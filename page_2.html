@@ -18,7 +18,7 @@
     <div class="separator"></div>
   </header>
 
-  <main class="content">
+   <main class="content">
     <!-- Transmission texte -->
     <div class="transmission-container">
       <div id="line1" class="transmission">Réponds si tu es prêt.</div>
@@ -26,10 +26,22 @@
       <div id="line3" class="transmission">Fin de transmission.</div>
     </div>
 
-    <!-- Oscilloscope -->
-    <canvas id="oscilloscope"></canvas>
+    <!-- Spirale d'Argax -->
+    <svg id="spirale-argax" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      <g id="spiral-group" filter="url(#glow)">
+        <path id="spiral-path" d="" stroke="#d4af7f" stroke-width="2" fill="none" stroke-linecap="round"/>
+      </g>
+    </svg>
   </main>
-
   <!-- Footer fixe -->
   <footer class="footer">
     <div class="separator"></div>
