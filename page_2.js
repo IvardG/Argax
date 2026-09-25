@@ -1,9 +1,7 @@
 const intro = document.getElementById("introSound");
 const click = document.getElementById("clickSound");
 const message = document.getElementById("messageSound");
-const spiraleSvg = document.getElementById("spirale-argax");
 const spiralePath = document.getElementById("spiral-path");
-const spiralGroup = document.getElementById("spiral-group");
 
 const line1 = document.getElementById("line1");
 const line2 = document.getElementById("line2");
@@ -59,7 +57,7 @@ function setupAudioContext() {
 function generateSpiral(amplitude = 1) {
   const cx = 200;
   const cy = 200;
-  const turns = 5; // nombre de tours de la spirale
+  const turns = 5;
   const points = 300;
   const maxRadius = 100;
   
@@ -71,7 +69,7 @@ function generateSpiral(amplitude = 1) {
     const radius = maxRadius * t * amplitude;
     
     const x = cx + Math.cos(angle) * radius;
-    const y = cy + Math.sin(angle) * radius;
+    const y = cy + Math.sin(angle) * amplitude;
     
     if (i === 0) {
       pathData += `M${x},${y}`;
@@ -97,7 +95,7 @@ function startSpiralVisualizer() {
       sum += dataArrayLocal[i];
     }
     const average = sum / bufferLength;
-    const amplitude = 0.5 + (average / 255) * 1.5; // Entre 0.5 et 2
+    const amplitude = 0.5 + (average / 255) * 1.5;
 
     // Mise à jour de la spirale
     const newPath = generateSpiral(amplitude);
