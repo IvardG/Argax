@@ -309,3 +309,21 @@ html {
   transition: opacity 0.5s ease;
   min-height: 80px;
 }
+/* ===== Spirale d'Argax ===== */
+#spirale-argax {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  margin: 4rem auto;
+  display: block;
+}
+
+#spiral-path {
+  stroke: #d4af7f;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 10px rgba(212, 175, 127, 0.6));
+  opacity: 0.8;
+  transition: opacity 0.1s ease;
+}
