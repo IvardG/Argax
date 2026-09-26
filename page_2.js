@@ -2,6 +2,7 @@ const intro = document.getElementById("introSound");
 const click = document.getElementById("clickSound");
 const message = document.getElementById("messageSound");
 const spiralePath = document.getElementById("spiral-path");
+const spiralGroup = document.getElementById("spiral-group");
 
 const line1 = document.getElementById("line1");
 const line2 = document.getElementById("line2");
@@ -11,6 +12,7 @@ let audioCtx = null;
 let analyser = null;
 let animationId = null;
 let sequenceStarted = false;
+let rotationAngle = 0;
 
 document.body.addEventListener("click", async () => {
   if (sequenceStarted) return;
@@ -89,11 +91,18 @@ function startSpiralVisualizer() {
     const average = sum / bufferLength;
     const amplitude = 0.6 + (average / 255) * 1.4;
 
+    // Mise à jour de la spirale
     const newPath = generateSpiral(amplitude);
     spiralePath.setAttribute("d", newPath);
     
+    // Rotation continue
+    rotationAngle += 0.5; // Vitesse de rotation
+    if (rotationAngle > 360) rotationAngle = 0;
+    spiralGroup.setAttribute("transform", `rotate(${rotationAngle} 200 200)`);
+    
+    // Variation d'opacité avec l'audio
     const maxFreq = Math.max(...dataArrayLocal);
-    spiralePath.style.opacity = 0.5 + (maxFreq / 255) * 0.5;
+    spiralPath.style.opacity = 0.5 + (maxFreq / 255) * 0.5;
 
     animationId = requestAnimationFrame(draw);
   }
