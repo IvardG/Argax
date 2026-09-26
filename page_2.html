@@ -27,20 +27,22 @@
     </div>
 
     <!-- Spirale d'Argax -->
-    <svg id="spirale-argax" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <filter id="glow">
-          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-          <feMerge>
-            <feMergeNode in="coloredBlur"/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
-      </defs>
-      <g id="spiral-group" filter="url(#glow)">
-        <path id="spiral-path" d="" stroke="#d4af7f" stroke-width="2" fill="none" stroke-linecap="round"/>
-      </g>
-    </svg>
+    <div id="spirale-container">
+      <svg id="spirale-argax" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <g id="spiral-group" filter="url(#glow)">
+          <path id="spiral-path" d="" stroke="#d4af7f" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
   </main>
   <!-- Footer fixe -->
   <footer class="footer">
