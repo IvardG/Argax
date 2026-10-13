@@ -317,11 +317,21 @@ html {
   margin: 4rem auto;
   display: block;
 }
-    /* ===== AVERTISSEMENT ===== */
+    
+#spiral-path {
+  stroke: #d4af7f;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 10px rgba(212, 175, 127, 0.6));
+  opacity: 0.8;
+  transition: opacity 0.1s ease;
+}
+/* ===== AVERTISSEMENT ===== */
     .warning {
       margin-top: 2rem;
       font-size: 0.85rem;
-      color: #5C4B99;
+      color: #c9c0b7;
       font-family: 'Space Grotesk', sans-serif;
       line-height: 1.6;
       opacity: 0.7;
@@ -335,12 +345,3 @@ html {
       display: block;
       margin-top: 0.5rem;
     }
-#spiral-path {
-  stroke: #d4af7f;
-  stroke-width: 2;
-  fill: none;
-  stroke-linecap: round;
-  filter: drop-shadow(0 0 10px rgba(212, 175, 127, 0.6));
-  opacity: 0.8;
-  transition: opacity 0.1s ease;
-}
