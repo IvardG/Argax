@@ -156,6 +156,17 @@
     margin-top: 0.5rem;
 }
 
+/* Avertissement visible uniquement sur écran tactile ou petit écran */
+.warning {
+    display: none;
+}
+
+@media (pointer: coarse), (max-width: 768px) {
+    .warning {
+        display: block;
+    }
+}
+
   </style>
 </head>
 
